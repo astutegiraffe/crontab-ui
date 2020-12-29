@@ -2,10 +2,12 @@
 //load database
 var Datastore = require('nedb');
 var path = require("path");
+var fs = require('fs');
 
 exports.db_folder = process.env.CRON_DB_PATH === undefined ? path.join(__dirname,  "crontabs") : process.env.CRON_DB_PATH;
 console.log("Cron db path: " + exports.db_folder);
 exports.log_folder = path.join(exports.db_folder, 'logs');
+fs.mkdirSync(exports.log_folder, {recursive: true});
 exports.env_file =  path.join(exports.db_folder, 'env.db');
 exports.crontab_db_file = path.join(exports.db_folder, 'crontab.db');
 
@@ -22,7 +24,6 @@ db.loadDatabase(function (err) {
 });
 
 var exec = require('child_process').exec;
-var fs = require('fs');
 var cron_parser = require("cron-parser");
 
 

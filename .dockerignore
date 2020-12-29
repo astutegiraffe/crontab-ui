@@ -1,5 +1,12 @@
 .git
 *.swp
 node_modules
-crontabs/*.db
-crontabs/logs/*.log
+.github
+README
+.dockerignore
+.gitignore
+docker-compose.yml
+Dockerfile
+LICENSE.md
+README.md
+supervisord.conf

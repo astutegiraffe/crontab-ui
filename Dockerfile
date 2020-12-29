@@ -1,24 +1,19 @@
-# docker run -d -p 8000:8000 alseambusher/crontab-ui
-FROM alpine:3.10
+# docker run -d -p 8000:8000 astutegiraffe/crontab-ui
+FROM registry.hub.docker.com/library/node:14.6.0-alpine
+
+LABEL maintainer "@astutegiraffe"
+LABEL description "Crontab-UI docker"
 
 ENV   CRON_PATH /etc/crontabs
 
-RUN   mkdir /crontab-ui; touch $CRON_PATH/root; chmod +x $CRON_PATH/root
+RUN touch $CRON_PATH/root && \
+	chmod +x $CRON_PATH/root && \
+	apk --no-cache add curl supervisor
+
+COPY . /crontab-ui
+COPY supervisord.conf /etc/supervisord.conf
 
 WORKDIR /crontab-ui
-
-LABEL maintainer "@alseambusher"
-LABEL description "Crontab-UI docker"
-
-RUN   apk --no-cache add \
-      wget \
-      curl \
-      nodejs \
-      npm \
-      supervisor
-
-COPY supervisord.conf /etc/supervisord.conf
-COPY . /crontab-ui
 
 RUN   npm install
 
