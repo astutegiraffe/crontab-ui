@@ -4,25 +4,21 @@ FROM registry.hub.docker.com/library/node:14.6.0-alpine
 LABEL maintainer "@astutegiraffe"
 LABEL description "Crontab-UI docker"
 
-ENV   CRON_PATH /etc/crontabs
-
-RUN touch $CRON_PATH/root && \
-	chmod +x $CRON_PATH/root && \
-	apk --no-cache add curl supervisor
+ENV CRON_PATH=/etc/crontabs \
+	HOST=0.0.0.0 \
+	PORT=8000 \
+	CRON_IN_DOCKER=true
 
 COPY . /crontab-ui
-COPY supervisord.conf /etc/supervisord.conf
 
 WORKDIR /crontab-ui
 
-RUN   npm install
-
-ENV   HOST 0.0.0.0
-
-ENV   PORT 8000
-
-ENV   CRON_IN_DOCKER true
+RUN touch $CRON_PATH/root && \
+	chmod +x $CRON_PATH/root && \
+	npm install && \
+	apk --no-cache add curl supervisor
 
 EXPOSE $PORT
 
-CMD ["supervisord", "-c", "/etc/supervisord.conf"]
+ENTRYPOINT ["supervisord"]
+CMD ["-c", "/crontab-ui/supervisord.conf"]
