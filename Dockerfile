@@ -16,7 +16,7 @@ WORKDIR /crontab-ui
 RUN touch $CRON_PATH/root && \
 	chmod +x $CRON_PATH/root && \
 	npm install && \
-	apk --no-cache add curl supervisor
+	apk --no-cache add curl supervisor jq
 
 EXPOSE $PORT
 
