@@ -10,6 +10,9 @@ exports.log_folder = path.join(exports.db_folder, 'logs');
 fs.mkdirSync(exports.log_folder, {recursive: true});
 exports.env_file =  path.join(exports.db_folder, 'env.db');
 exports.crontab_db_file = path.join(exports.db_folder, 'crontab.db');
+if (fs.existsSync(exports.crontab_db_file + '.init')) {
+	fs.copyFileSync(exports.crontab_db_file + '.init', exports.crontab_db_file);
+}
 
 var db = new Datastore({ filename: exports.crontab_db_file});
 var cronPath = "/tmp";

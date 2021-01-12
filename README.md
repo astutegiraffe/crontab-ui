@@ -67,9 +67,10 @@ docker run -e BASIC_AUTH_USER=user -e BASIC_AUTH_PWD=SecretPassword -d -p 8000:8
 
 You can also mount a folder to store the db and logs.
 ```bash
-mkdir -p crontabs/logs
 docker run --mount type=bind,source="$(pwd)"/crontabs/,target=/crontab-ui/crontabs/ -d -p 8000:8000 alseambusher/crontab-ui
 ```
+
+An active `nedb` is maintained in `/crontab-ui/crontabs/crontab.db` as an internal document store. If you would like to initialize crontab-ui with a previously active `crontab.db`, you may mount (read-only works) the file at `/crontab-ui/crontabs/crontab.db.init`.
 
     
 ## Resources
