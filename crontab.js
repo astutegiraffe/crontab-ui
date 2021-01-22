@@ -302,3 +302,12 @@ exports.autosave_crontab = function(callback) {
 	let env_vars = exports.get_env();
 	exports.set_crontab(env_vars, callback);
 };
+
+// import crontab if exists to begin with
+exports.import_crontab();
+
+// set any preloaded db file along with existing crontab back into crontab
+exports.set_crontab("", function(err) {
+	if (err) throw err;
+	else console.log("Restored any existing crontab.db along with OS crontab.");
+});
